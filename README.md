@@ -35,7 +35,7 @@ Este projeto implementa um sistema de temporização para acionamento de LEDs ut
 
 1. Clone ou baixe este repositório.
 2. Configure o ambiente de desenvolvimento do Raspberry Pi Pico W com CMake e o SDK.
-3. Compile o código usando os seguintes comandos:
+3. Compile o código usando os seguintes comandos (ou através da extensão do VS Code):
    ```sh
    mkdir build
    cd build
@@ -43,7 +43,7 @@ Este projeto implementa um sistema de temporização para acionamento de LEDs ut
    make
    ```
 4. Carregue o arquivo `.uf2` gerado no Raspberry Pi Pico W.
-5. Utilize o terminal serial do VS Code para visualizar as mensagens de depuração
+5. Utilize o terminal serial do VS Code para visualizar as mensagens de depuração.
 
 ## Testes e Validação
 
