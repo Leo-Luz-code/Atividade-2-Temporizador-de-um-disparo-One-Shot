@@ -9,6 +9,8 @@
 #define BLUE_LED 13
 #define BUTTON 5
 
+volatile bool timer_active = false;
+
 // Função para inicializar os leds e o botão
 void initialize_leds_and_button()
 {
@@ -22,6 +24,30 @@ void initialize_leds_and_button()
     gpio_set_dir(GREEN_LED, GPIO_OUT);
     gpio_set_dir(BUTTON, GPIO_IN);
     gpio_pull_up(BUTTON);
+}
+
+// Função para desligar o último LED e liberar o botão
+int64_t turn_off_last_led_callback(alarm_id_t id, void *user_data)
+{
+    gpio_put(GREEN_LED, 0);
+    timer_active = false;
+    return 0;
+}
+
+// Função para desligar o segundo LED e programar o próximo callback
+int64_t turn_off_second_led_callback(alarm_id_t id, void *user_data)
+{
+    gpio_put(RED_LED, 0);
+    add_alarm_in_ms(3000, turn_off_last_led_callback, NULL, false);
+    return 0;
+}
+
+// Função para desligar o primeiro LED e programar o próximo callback
+int64_t turn_off_first_led_callback(alarm_id_t id, void *user_data)
+{
+    gpio_put(BLUE_LED, 0);
+    add_alarm_in_ms(3000, turn_off_second_led_callback, NULL, false);
+    return 0;
 }
 
 int main()
