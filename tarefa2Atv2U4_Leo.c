@@ -69,10 +69,13 @@ void button_callback(uint gpio, uint32_t events)
 int main()
 {
     stdio_init_all();
+    initialize_leds_and_button();
+
+    // Interrupção do botão
+    gpio_set_irq_enabled_with_callback(BUTTON, GPIO_IRQ_EDGE_FALL, true, button_callback);
 
     while (true)
     {
-        printf("Hello, world!\n");
         sleep_ms(1000);
     }
 }
