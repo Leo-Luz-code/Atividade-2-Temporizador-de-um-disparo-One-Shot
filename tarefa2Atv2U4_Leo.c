@@ -31,6 +31,7 @@ int64_t turn_off_last_led_callback(alarm_id_t id, void *user_data)
 {
     gpio_put(GREEN_LED, 0);
     timer_active = false;
+    printf("Led Verde Apagado.\n");
     return 0;
 }
 
@@ -39,6 +40,7 @@ int64_t turn_off_second_led_callback(alarm_id_t id, void *user_data)
 {
     gpio_put(RED_LED, 0);
     add_alarm_in_ms(3000, turn_off_last_led_callback, NULL, false);
+    printf("Led Vermelho Apagado.\n");
     return 0;
 }
 
@@ -47,6 +49,7 @@ int64_t turn_off_first_led_callback(alarm_id_t id, void *user_data)
 {
     gpio_put(BLUE_LED, 0);
     add_alarm_in_ms(3000, turn_off_second_led_callback, NULL, false);
+    printf("Led Azul Apagado.\n");
     return 0;
 }
 
