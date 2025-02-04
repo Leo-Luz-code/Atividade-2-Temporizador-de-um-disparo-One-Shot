@@ -55,7 +55,7 @@ target_include_directories(tarefa2Atv2U4_Leo PRIVATE
 
 # Add any user requested libraries
 target_link_libraries(tarefa2Atv2U4_Leo 
-        
+        hardware_timer
         )
 
 pico_add_extra_outputs(tarefa2Atv2U4_Leo)
