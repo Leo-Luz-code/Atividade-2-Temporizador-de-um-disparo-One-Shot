@@ -50,6 +50,22 @@ int64_t turn_off_first_led_callback(alarm_id_t id, void *user_data)
     return 0;
 }
 
+// Callback do botão
+void button_callback(uint gpio, uint32_t events)
+{
+    if (gpio == BUTTON && !timer_active)
+    {
+        timer_active = true;
+
+        gpio_put(BLUE_LED, 1);
+        gpio_put(GREEN_LED, 1);
+        gpio_put(RED_LED, 1);
+        printf("Todos os LEDs acesos.\n");
+
+        add_alarm_in_ms(3000, turn_off_first_led_callback, NULL, false);
+    }
+}
+
 int main()
 {
     stdio_init_all();
