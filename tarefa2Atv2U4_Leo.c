@@ -10,6 +10,7 @@
 #define BUTTON 5
 
 volatile bool timer_active = false;
+volatile bool debounce_active = false; // Flag para debounce
 
 // Função para inicializar os leds e o botão
 void initialize_leds_and_button()
@@ -53,19 +54,32 @@ int64_t turn_off_first_led_callback(alarm_id_t id, void *user_data)
     return 0;
 }
 
-// Callback do botão
+int64_t debounce_callback(alarm_id_t id, void *user_data)
+{
+    if (gpio_get(BUTTON) == 0) // Verifica se ainda está pressionado
+    {
+        if (!timer_active)
+        {
+            timer_active = true;
+
+            gpio_put(BLUE_LED, 1);
+            gpio_put(GREEN_LED, 1);
+            gpio_put(RED_LED, 1);
+            printf("Todos os LEDs acesos.\n");
+
+            add_alarm_in_ms(3000, turn_off_first_led_callback, NULL, false);
+        }
+    }
+    debounce_active = false; // Libera para nova detecção
+    return 0;
+}
+
 void button_callback(uint gpio, uint32_t events)
 {
-    if (gpio == BUTTON && !timer_active)
+    if (gpio == BUTTON && !debounce_active)
     {
-        timer_active = true;
-
-        gpio_put(BLUE_LED, 1);
-        gpio_put(GREEN_LED, 1);
-        gpio_put(RED_LED, 1);
-        printf("Todos os LEDs acesos.\n");
-
-        add_alarm_in_ms(3000, turn_off_first_led_callback, NULL, false);
+        debounce_active = true;
+        add_alarm_in_ms(50, debounce_callback, NULL, false); // Tempo de debounce
     }
 }
 
