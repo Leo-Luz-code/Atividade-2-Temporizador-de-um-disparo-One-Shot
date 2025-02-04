@@ -25,6 +25,36 @@ void initialize_leds_and_button()
     gpio_set_dir(GREEN_LED, GPIO_OUT);
     gpio_set_dir(BUTTON, GPIO_IN);
     gpio_pull_up(BUTTON);
+
+    printf("Testando inicialização: \n");
+
+    // Teste de LEDs: Ligar e desligar cada um para verificar funcionamento
+    gpio_put(BLUE_LED, 1);
+    printf("LED Azul ligado.\n");
+    sleep_ms(500);
+    gpio_put(BLUE_LED, 0);
+    printf("LED Azul desligado.\n");
+
+    gpio_put(RED_LED, 1);
+    printf("LED Vermelho ligado.\n");
+    sleep_ms(500);
+    gpio_put(RED_LED, 0);
+    printf("LED Vermelho desligado.\n");
+
+    gpio_put(GREEN_LED, 1);
+    printf("LED Verde ligado.\n");
+    sleep_ms(500);
+    gpio_put(GREEN_LED, 0);
+    printf("LED Verde desligado.\n");
+
+    printf("Teste de LEDs concluído.\n");
+
+    // Teste do botão
+    printf("Pressione o botão para testar...\n");
+    while (gpio_get(BUTTON) == 1)
+    {
+    } // Aguarda o usuário pressionar
+    printf("Botão pressionado! Teste bem-sucedido.\n");
 }
 
 // Função para desligar o último LED e liberar o botão
@@ -79,6 +109,7 @@ void button_callback(uint gpio, uint32_t events)
     if (gpio == BUTTON && !debounce_active)
     {
         debounce_active = true;
+        printf("Interrupção do botão detectada, aplicando debounce...\n");
         add_alarm_in_ms(50, debounce_callback, NULL, false); // Tempo de debounce
     }
 }
